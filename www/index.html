@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+
+        <!-- Zugriff auf bestimmte externe Ressourcen erlauben z.B jquery, leaflet, openstreetmap -->
+        <meta http-equiv="Content-Security-Policy" content="
+            default-src 'self' 'unsafe-inline' https://code.jquery.com https://unpkg.com/leaflet@1.7.1/ https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js http://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js http://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/0.4.0/leaflet.markercluster.js data: gap: https://ssl.gstatic.com;
+            style-src 'self' 'unsafe-inline' https://unpkg.com/leaflet@1.7.1/ http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css  https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css https://fonts.googleapis.com;
+            img-src 'self' https://*.tile.openstreetmap.org/ data:;
+            font-src 'self' https://fonts.gstatic.com/;
+            connect-src 'self' http://igf-srv-lehre.igf.uni-osnabrueck.de:40148;
+            media-src 'self' http://igf-srv-lehre.igf.uni-osnabrueck.de:40148;
+        ">
+
+        <meta name="format-detection" content="telephone=no">
+        <meta name="msapplication-tap-highlight" content="no">
+        <meta name="viewport" content="initial-scale=1, width=device-width, viewport-fit=cover">
+        <meta name="color-scheme" content="light dark">
+
+        <link rel="stylesheet" href="css/index.css">
+
+        <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+              integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+              crossorigin=""/>
+        <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+                integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+                crossorigin=""></script>
+
+        <!-- Für das Clusterung der Marker beim herauszoomen -->
+        <link rel="stylesheet" type="text/css" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css" />
+        <link rel="stylesheet" type="text/css" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css" />
+        <script type='text/javascript' src='https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js'></script>
+
+        <!-- Einladen der Schriftart Raleway -->
+        <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+
+        <title>ClearYourRide</title>
+    </head>
+    <body>
+
+        <div id='mainAreaId'>
+            <section>
+                
+                <!-- Div das die Karte beinhaltet-->
+                <div id="mapId"></div>
+
+                <!-- Button zum Hinzufügen eine Missstandes-->
+                <div id="buttonWrapper">
+                    <button type="button" class="hoverBtn" onclick="openForm()" id="request"><img src="img/add.png" alt="Drücken zum Hinzufügen" width="70" height="70"></button>
+                </div>
+    
+                <!-- Diese beiden Divs werden beim Abschicken des Formulars sichtbar gemacht, um dem Nuzer eine Rückmeldung zu geben -->
+                <div id="successDiv" class="mapWindows successErrorDiv">
+                    <label class="description">Vielen Dank für ihre Meldung!</label> <br>
+                    Wir kümmern uns darum.
+                </div>
+                <div id="errorDiv" class="mapWindows successErrorDiv">
+                    <label class="description">Das hat leider nicht geklappt :/</label> <br>
+                    Versuchen Sie es später nochmnal.
+                </div>
+    
+                <!-- Formular zur Eingabe einer Statusmeldung -->
+                <div class="mapWindows formPopup" id="popupForm">
+                    <form class="formContainer" id="formRequest" onsubmit="validateForm()">
+    
+                        <button type="button" class="cancel hoverBtn imgButton" onclick="closeForm()"><img src="img/close.png" alt="Exit" width="20" height="20"></button>
+                        <!-- Aufteilung in 2 verschiede Div der Klasse "Tab", um ein zweiseitiges Formular zu erstellen -->
+                        <div class="tab">
+    
+                            <label for="meldung" class="description">Welche Behinderung liegt vor?</label>
+                            <select name="type" class="input" id="meldung" required>
+                                <option value="" disabled selected>Bitte wählen...</option>
+                                <option value="vegetation">Radweg blockiert durch wuchernde Vegetation</option>
+                                <option value="object">Radweg blockiert durch Gegenstand (z.B. Verkehrsschild/Mülltonnen…) </option>
+                                <option value="damage">Schaden (z.B. Schlagloch) am Radweg</option>
+                                <option value="parking">Radweg wird an dieser Stelle häufig zugepark</option>
+                                <option value="traffic_lights">Ampelschaltung ist an dieser Stelle für Radfahrer ungünstig</option>     
+                            </select>
+    
+                            <label for="explanation" class="description">Erläuterung</label>
+                            <textarea class="input" id="explanation" placeholder="Kurze Beschreibung der Behinderung..." name="description" rows="4" required></textarea>
+                            
+                            <!-- Aufnahme von Fotos sowohl mit der Kamera, als auch aus der Galerie - gespeichert werden sie in einem hidden Input -->
+                            <label for="takePic" class="description">Foto hinzufügen</h4><br>
+                            <img id = "problemImage" style='height: 100%; width: 100%; object-fit: contain; display: none; margin-top: 10px; margin-bottom: 10px'></img>
+                            <button name="takePic" type="button" class="foto hoverBtn imgButton" id="takepic" onclick="cameraTakePicture()"><img src="img/camera.png" alt="Foto mit Kamera hinzufügen" width="40" height="40"></button>
+                            <button name="choosePic" type="button" class="foto hoverBtn imgButton" id="choosepic" onclick="storageTakePicture()"><img src="img/galerie.png" alt="Foto aus Datei hinzufügen" width="40" height="40"></button>
+                            <input type="hidden" id="photo" name="photo">
+                        </div>
+    
+    
+                        <div class="tab">
+                            <label for="name" class="description">Vor- und Nachname</label>
+                            <input type="text" class="input" id="name" placeholder="Hier Bitte Vor- und Nachname" name="name" required>
+                            <label for="email" class="description">E-Mail</label>
+                            <input type="email" class="input" id="email" placeholder="Ihre E-mail" name="mail" required>
+                        </div>
+    
+                        <!-- Div zu Verwaltung der Weiter, Zurück und Submit Buttons -->
+                        <div style="overflow:auto;">
+                            <button type="button" id="prevBtn" class="mapButton confirmButton hoverBtn" onclick="nextPrev(-1)">Zurück</button>
+                            <button type="button" id="nextBtn" class="mapButton confirmButton hoverBtn" onclick="nextPrev(1)" style="float: right;">Weiter</button>
+                            <div style="overflow: auto; display: flex; justify-content: center; align-items: center">
+                                <button type="submit" id="submit" class="mapButton confirmButton" style="display: none; align-self: center; background-color: rgb(19, 107, 1) ">Abschicken</button>
+                            </div>
+                        </div>
+                         
+                        <!-- Kreise als Indikator der aktuellen Seite/des Fortschrittes -->
+                        <div style="text-align:center; margin-top:10px; margin-bottom: 10px;">
+                            <span class="step"></span>
+                            <span class="step"></span>
+                        </div>
+                    </form>
+                </div>
+            </section>
+        </div>
+
+        <script src="cordova.js"></script>
+        <script src="js/index.js"></script>
+
+    </body>
+</html>

@@ -1,0 +1,233 @@
+/* Allgemeine Variablen für z.B. Farben */
+:root {
+    --color_White: #FFFFFF;
+    --color_Light: #ddd;
+    --color_Grey: #999999;
+    --color_Black: #000000;
+    --color_TransparentGrey: #00000055;
+    --color_Transparent: #FFFFFF00;
+    --color_lightRed: #f19393;
+    --color_lightGreen: #04AA6D;
+}
+
+/* Größe der einzelnen Bereiche */
+html, body {
+    height: 100%;
+    margin: 0px;
+}
+section {
+    flex-grow: 100;
+}
+#mainAreaId, #mapId {
+    display: flex;
+    height: 100%;
+}
+
+/* Grundlegende Schrifteinstellungen */
+div {
+    font-family: Raleway;
+    font-size: 12px;
+    color: var(--color_Black);
+}
+
+/* Beschreibende Überschriften (in der Legende, im Popup und bei Misstand hinzufügen)*/
+.description {
+    text-align: left;
+    font-size: 17px;
+    font-weight: bold;
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
+
+/* Popup mit Informationen über einen Misstand */
+.popupText {
+    font-weight: bold;
+}
+
+/* Eingabefelder fürs Datum in der Legende */
+.legendInput {
+    font-family: Raleway;
+    font-size: 12px;
+    text-align: right;
+    float: right;
+    margin-right: 10px;
+}
+
+/* Farbe und Schriftstyle für die Buttons (Position, Legende,...) (Aussehen ähnlich zu den Leaflet Zoombuttons) */
+.mapButton {
+    background-color: var(--color_White);
+    border: 2px solid var(--color_TransparentGrey);
+    border-radius: 5px;
+}
+
+/* Style für das Markercluster (Zusammenfassung mehrerer Missstände) */
+.marker-cluster {
+    line-height: 32px;
+    background-color: var(--color_Black);
+    color: var(--color_White);
+    text-align: center;
+}
+
+/* Style für die Fenster (Misstand hinzugügen, Legende) (ähnlich zu den Buttons) */
+.mapWindows {
+    background-color: var(--color_White);
+    border: 2px solid var(--color_TransparentGrey);
+    border-radius: 5px;
+}
+
+/* Genauere Farbe und Schriftstyle für die Legende */
+.legendDiv {
+    padding: 10px 10px;
+    text-align: left;
+    line-height: 35px;
+}
+.legendDiv_hide_false {
+    max-height: 72vh; /* Legende umfasst maximal 72% des gesamten Fenster */
+    overflow-y: auto; /* Legende scrollbar wenn größer */
+}
+.legendDiv_hide_true {
+    background-color: var(--color_Transparent);
+    border: 1px solid var(--color_Transparent); /* Durchsichtiger Rand, damit gleiche Größe und Position */
+}
+
+/* Style und Schriftstyle des Form Popup Containers */
+* {
+    box-sizing: border-box; /* Damit wird das Popup auf die passende Größe angepasst */
+}
+
+/* Position und Größe des Divs, welches das Formular beinhaltet */
+.formPopup {
+    display: none;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    max-height: 90%;
+    overflow-y: auto;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+    width: 90%;
+}
+
+/* Style und Position des Formulars */
+.formContainer {
+    padding: 20px;
+    background-color: var(--color_White);
+}
+
+/* Style und Größe der Elemente des Formulars */
+.formContainer input,
+.formContainer select,
+.formContainer textarea {
+    padding: 10px;
+    width: 100%;
+    font-size: 17px;
+    font-family: Raleway;
+    border: 2px solid var(--color_TransparentGrey);
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+/* Style, wenn die Elemente in den Fokus gerückt werden */
+.formContainer input:focus,
+.formContainer select:focus,
+.formContainer textarea:focus {
+    background-color: var(--color_Light);
+    outline: none;
+}
+
+/* Markieren der Felder mit inkorrekter Eingabe */
+.input.invalid {
+    background-color: var(--color_lightRed);
+}
+
+/* Verstecke das PopUp Fomular zu Beginn */
+.tab {
+    display: none;
+}
+
+/* Style und Schriftstyle für "Sende-" Buttons (Weiter, Behoben Status ändern, ...) */
+.confirmButton {
+    background-color: var(--color_lightGreen);
+    color: var(--color_White);
+    border: none;
+    padding: 10px 20px;
+    font-size: 17px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    cursor: pointer; /*Ändern des Mauszeigers wenn über dem Knopf */
+    align-self: center;
+}
+
+/* Style für den Hinzufügen-Button */
+#buttonWrapper {
+    position: absolute;
+    z-index: 9999;
+    bottom: 15px;
+    right: 10px;
+    background-color: transparent;
+    border: transparent;
+}
+#request {
+    background-color: transparent;
+    border: transparent;
+}
+
+/* Allgemeine Einstellungen für Buttons auf Basis von Bildern */
+.imgButton {
+    background-color: transparent;
+    border: transparent;
+    align-self: center;
+    cursor: pointer;
+}
+
+/*  Schließen Button */
+.cancel {
+    float: right;
+    margin-top: -10px;
+    margin-right: -14px;
+}
+
+/* Buttons zum Hinzufügen von Bildern */
+.foto {
+    float: left;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-right: 10px;
+}
+
+/* Wenn über einen Button gehovert wird, geht die Deckkraft zurück */
+.hoverBtn:hover {
+    opacity: 0.8;
+}
+
+/* Die Indikatoren für die aktuelle Seite im Formular */
+.step {
+    height: 15px;
+    width: 15px;
+    margin: 0 2px;
+    background-color: var(--color_Grey);
+    border: none;
+    border-radius: 50%;
+    display: inline-block;
+    opacity: 0.5;
+}
+/* Erhöhe die Deckkraft des aktiven Indikators */
+.step.active {
+    opacity: 1;
+}
+
+/* Success Div nach abschicken */
+.successErrorDiv {
+    display: none;
+    position: absolute;
+    height: auto;
+    width: 90%;
+    font-size: 17px;
+    padding: 10px;
+    line-height: 200%;
+    transform: translate(-50%, -50%);
+    left: 50%;
+    top: 50%;
+    z-index: 9999;
+    text-align: center;
+}
