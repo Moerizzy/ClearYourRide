@@ -1,4 +1,4 @@
- # ClearYourRide <img src="img/logo2.png" alt="Cycle-Logo" style="width:30px;"/>
+ # ClearYourRide <img src="img/logo2.png" alt="Cycle-Logo" style="width:50px;"/>
  A Cordova App to reprort grievances in the urban cycling infrastructure. 
 
  The Erläuterung_Implementierung_CYR.pdf is a detailed description of the App, but unfortunatly in German.
@@ -8,5 +8,5 @@
  3. Go to the repository in the Terminal
  4. Start the app by `cordova run android`
 
- <img src="img\Screenshot_filter.jpg" alt="Screenshot Filter function" style="width:200px;"/> <img src="img\Screenshot_meldung.jpg" alt="Screenshot of a report" style="width:200px;"/>
+ <img src="img\Screenshot_filter.jpg" alt="Screenshot Filter function" style="width:300px;"/> <img src="img\Screenshot_meldung.jpg" alt="Screenshot of a report" style="width:300px;"/>
 
