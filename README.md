@@ -1,4 +1,4 @@
- # ClearYourRide <img src="img/logo2.png" alt="Cycle-Logo" style="width:50px;"/>
+ # ClearYourRide <img src="img/logo2.png" alt="Cycle-Logo" style="width:40px;"/>
  A Cordova App to reprort grievances in the urban cycling infrastructure. 
 
  The Erläuterung_Implementierung_CYR.pdf is a detailed description of the App, but unfortunatly in German.
